@@ -1,19 +1,21 @@
-#```py
-import json
+'''
+doc string
+'''
+import os
+#import json
 from ibm_watson import LanguageTranslatorV3
 from ibm_cloud_sdk_core.authenticators import IAMAuthenticator
-import os
 from dotenv import load_dotenv
 
 load_dotenv()
 
 apikey = os.environ['apikey']
 url = os.environ['url']
-version = '2018-05-01'
+VERSION = '2018-05-01'
 #```
 authenticator = IAMAuthenticator(apikey)
 language_translator = LanguageTranslatorV3(
-    version= version,
+    version= VERSION,
     authenticator=authenticator
 )
 
@@ -35,26 +37,28 @@ language_translator.set_service_url(url)
 # print(res)
 
 
-def englishToFrench(englishText):
+def english_to_french(english_text):
+    ''' translate English to French'''
     #write the code here
-    if englishText is None:
-        frenchText='Please provide a string to translate'
-    else:
+    if english_text:
         translation = language_translator.translate(
-        text=englishText,
+        text=english_text,
         model_id='en-fr').get_result()
         # frenchText= json.dumps(translation, indent=2, ensure_ascii=False)
-        frenchText= translation['translations'][0]['translation']
-    return frenchText
-
-def frenchToEnglish(frenchText):
-    #write the code here
-    if frenchText is None:
-        englishText='Please provide a string to translate'
+        french_text= translation['translations'][0]['translation']
     else:
+        french_text='Please provide a string to translate'
+    return french_text
+
+def french_to_english(french_text):
+    ''' translate french to english'''
+    #write the code here
+    if french_text:
         translation = language_translator.translate(
-        text=frenchText,
+        text=french_text,
         model_id='fr-en').get_result()
         # englishText= json.dumps(translation, indent=2, ensure_ascii=False)
-        englishText= translation['translations'][0]['translation']
-    return englishText
+        english_text= translation['translations'][0]['translation']
+    else:
+        english_text='Please provide a string to translate'
+    return english_text
